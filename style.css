@@ -19,6 +19,38 @@ section {
     background-color: rgb(245, 245, 245);
 }
 
+input, textarea {
+    width: 100%;
+    background-color: #242424;
+    color: white;
+    outline: none;
+    border: 3px solid #c0c4cc;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    height: 40px;
+    transition: all 300ms ease;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+textarea {
+    resize: none;
+    height: 100px;
+    margin-top: 8px;
+}
+
+input:hover, textarea:hover {
+   border-color: #dcdfe6; 
+}
+
+input:focus, textarea:focus {
+    border-color: #f06449;
+}
+
 a {
     text-decoration: none;
 }
@@ -49,6 +81,12 @@ a {
 
 button {
     cursor: pointer;
+}
+
+.required {
+    color:red;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 /* LANDING PAGE */
@@ -241,6 +279,9 @@ nav {
 .modal__half {
     width: 50%;
     padding: 40px 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .modal__about {
@@ -296,6 +337,7 @@ nav {
 }
 
 .modal__sub-title {
+    font-size: 14px;
     margin: 12px 0 24px 0;
 }
 
@@ -304,6 +346,31 @@ nav {
     line-height: 1.75;
 }
 
+.form__item {
+    margin-bottom: 20px;
+}
+
+.form__submit {
+    background-color: #f06449;
+    border: 2px solid #f06449;
+    color: white;
+    font-weight: 700;
+    width: 100%;
+    max-width: 240px;
+    padding: 12px 24px;
+    font-size: 20px;
+    transition: all 300ms ease;
+}
+
+.form__submit:hover {
+    border-color: #fff;
+    background-color: transparent;
+}
+
+.form__submit:active {
+    border-color: #f06449;
+    color: #f06449;
+}
 
 /* PROJECTS */
 
