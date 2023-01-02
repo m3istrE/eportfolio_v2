@@ -68,6 +68,7 @@ a {
 }
 
 .click {
+    cursor: pointer;
     transition: all 300ms ease;
 }
 
@@ -282,6 +283,8 @@ nav {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position:relative;
+
 }
 
 .modal__about {
@@ -370,6 +373,55 @@ nav {
 .form__submit:active {
     border-color: #f06449;
     color: #f06449;
+}
+
+.modal__overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal__overlay--loading {
+    background-color: blue;    
+    font-size: 80px;
+    z-index: -1;
+}
+
+.modal__overlay--success {
+    background-color: #4bb543;
+    font-size: 40px;
+    font-weight: 700;
+    text-align: center;
+    padding: 28px;
+}
+
+.fa__spinner {
+    animation: spinner 750ms infinite linear;
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+}
+
+.modal__exit {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    color: #fff;
+    font-size: 36px;
+    z-index: 100;
 }
 
 /* PROJECTS */
