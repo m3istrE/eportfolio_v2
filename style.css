@@ -384,12 +384,13 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: -1;
 }
 
 .modal__overlay--loading {
-    background-color: blue;    
+    background-color: #242424;    
     font-size: 80px;
-    z-index: -1;
+    
 }
 
 .modal__overlay--success {
