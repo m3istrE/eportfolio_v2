@@ -19,7 +19,8 @@ section {
     background-color: rgb(245, 245, 245);
 }
 
-input, textarea {
+input,
+textarea {
     width: 100%;
     background-color: #242424;
     color: white;
@@ -43,11 +44,13 @@ textarea {
     margin-top: 8px;
 }
 
-input:hover, textarea:hover {
-   border-color: #dcdfe6; 
+input:hover,
+textarea:hover {
+    border-color: #dcdfe6;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
     border-color: #f06449;
 }
 
@@ -85,7 +88,7 @@ button {
 }
 
 .required {
-    color:red;
+    color: red;
     font-size: 14px;
     font-weight: bold;
 }
@@ -201,7 +204,7 @@ span.secondary {
 
 .link__hover-effect::after {
     content: "";
-    position:absolute;
+    position: absolute;
     bottom: -3px;
     right: 0;
     width: 0;
@@ -283,7 +286,7 @@ nav {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position:relative;
+    position: relative;
 
 }
 
@@ -321,7 +324,7 @@ nav {
     transform: scale(1);
 }
 
-.modal__language:hover{
+.modal__language:hover {
     filter: brightness(80%);
     transform: scale(0.9);
 }
@@ -375,7 +378,7 @@ nav {
     color: #f06449;
 }
 
-.modal__overlay{
+.modal__overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -388,9 +391,9 @@ nav {
 }
 
 .modal__overlay--loading {
-    background-color: #242424;    
+    background-color: #242424;
     font-size: 80px;
-    
+
 }
 
 .modal__overlay--success {
@@ -533,6 +536,7 @@ footer {
     margin: 28px 0;
 }
 
-.footer__social--link, .footer__copyright {
+.footer__social--link,
+.footer__copyright {
     color: white;
 }
