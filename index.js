@@ -13,5 +13,15 @@ function contact(event) {
   .sendForm('service_h3lv0ku', 'template_tmumtro',event.target,'jVsHuaxsPFTEcB-o_').then(() => {
     loading.classList.toggle("modal__overlay--visible");
     success.classList.toggle("modal__overlay--visible");
+  }).catch(() => {
+    loading.classList.toggle("modal__overlay--visible");
+    alert(
+      "The email service is temporarily unavailable. Contact me directly on v-2krisg@outlook.com"
+    )
   })
+}
+
+
+function toggleModal(event) {
+  document.body.classList.toggle("modal--open");
 }
