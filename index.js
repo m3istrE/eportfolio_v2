@@ -25,3 +25,7 @@ function contact(event) {
 function toggleModal(event) {
   document.body.classList.toggle("modal--open");
 }
+
+function toggleContrast(event){
+  document.body.classList.toggle("dark-theme");
+}
