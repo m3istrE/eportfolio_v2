@@ -93,6 +93,10 @@ button {
     font-weight: bold;
 }
 
+.dark-theme {
+
+}
+
 /* LANDING PAGE */
 
 #landing-page {
@@ -256,8 +260,8 @@ nav {
 }
 
 #personal-logo {
-    height: 50px;
-    width: 50px;
+    height: 100px;
+    width: 100px;
     filter: invert(1);
 }
 
@@ -553,7 +557,7 @@ footer {
 }
 
 .footer__img {
-    width: 70px;
+    width: 70px
 }
 
 .footer__social--list {
