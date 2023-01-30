@@ -17,6 +17,7 @@ li {
 
 section {
     background-color: rgb(245, 245, 245);
+    transition: all 300ms ease;
 }
 
 input,
@@ -93,10 +94,6 @@ button {
     font-weight: bold;
 }
 
-.dark-theme {
-
-}
-
 /* LANDING PAGE */
 
 #landing-page {
@@ -165,6 +162,7 @@ span.secondary {
     position: fixed;
     bottom: 32px;
     right: 40px;
+    z-index: 60;
 }
 
 .scroll {
@@ -239,10 +237,47 @@ nav, .scroll, .header {
 
 .modal--open nav,
 .modal--open .scroll, 
-.modal--open .header {
+.modal--open .header,
+.modal--open .mail__btn {
     opacity: 0;
     visibility: hidden;
     transition: all 300ms ease;
+}
+
+.dark-theme .header__title,
+.dark-theme .section__title,
+.dark-theme .section__sub-title,
+.dark-theme .nav__link--anchor,
+.dark-theme .fa-circle-half-stroke,
+.dark-theme .header__para,
+.dark-theme .link__hover-effect--black {
+    color: white;
+}
+
+.dark-theme section {
+    background-color: #242424;
+}
+
+.dark-theme .mail__btn{
+    background-color: white;
+    color: #242424;
+}
+
+/* .dark-theme footer{
+    filter: invert(1);
+} */
+
+.dark-theme #personal-logo {
+    filter: none;
+}
+
+.dark-theme .scroll__icon {
+    border-color: white;
+}
+
+.dark-theme .scroll__icon::after,
+.dark-theme .link__hover-effect--black::after {
+    background-color: white;
 }
 
 /* Navigation */
@@ -557,7 +592,7 @@ footer {
 }
 
 .footer__img {
-    width: 70px
+    width: 70px;
 }
 
 .footer__social--list {
