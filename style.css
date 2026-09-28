@@ -379,16 +379,28 @@ nav {
     transition: all 300ms ease;
 }
 
+/* Hover/tap label. Was positioned from the icon's LEFT edge and allowed to wrap, so
+   "Home Assistant" broke onto two lines on top of its own icon in narrow phone columns.
+   Centred under the icon, single line, on a pill so it stays legible over neighbours. */
 .language__name {
     position: absolute;
-    bottom: -10px;
-    transform: scale(0);
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -4px) scale(0);
+    white-space: nowrap;
+    font-size: 12px;
     font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background-color: #242424;
+    color: #fff;
+    z-index: 5;
+    pointer-events: none;
     transition: all 300ms ease;
 }
 
 .modal__language:hover .language__name {
-    transform: scale(1);
+    transform: translate(-50%, -4px) scale(1);
 }
 
 .modal__language:hover {
