@@ -113,7 +113,8 @@ button {
 }
 
 .header__title {
-    font-size: 120px;
+    /* was a fixed 120px: overflowed phones ("Kristoffer" cut off, ran into the logo) */
+    font-size: clamp(48px, 13vw, 120px);
     margin-bottom: 12px;
     text-align: left;
     line-height: 1;
