@@ -1,26 +1,3 @@
-// TemplateID: template_tmumtro
-// ServiceID: service_h3lv0ku
-// UserID: jVsHuaxsPFTEcB-o_
-
-// function contact(event) {
-//   event.preventDefault();
-//   const loading = document.querySelector('.modal__overlay--loading');
-//   const success = document.querySelector('.modal__overlay--success');
-
-//   loading.classList.toggle("modal__overlay--visible");
-
-//   emailjs
-//   .sendForm('service_h3lv0ku', 'template_tmumtro',event.target,'jVsHuaxsPFTEcB-o_').then(() => {
-//     loading.classList.toggle("modal__overlay--visible");
-//     success.classList.toggle("modal__overlay--visible");
-//   }).catch(() => {
-//     loading.classList.toggle("modal__overlay--visible");
-//     alert(
-//       "The email service is temporarily unavailable. Contact me directly on v-2krisg@outlook.com"
-//     )
-//   })
-// }
-
 async function contact(event) {
   event.preventDefault();
   const loading = document.querySelector('.modal__overlay--loading');
@@ -34,7 +11,9 @@ async function contact(event) {
     success.classList.toggle("modal__overlay--visible");
   } catch (error) {
     loading.classList.toggle("modal__overlay--visible");
-    alert("The email service is temporarily unavailable. Contact me directly on v-2krisg@outlook.com");
+    // address assembled at runtime so it never appears whole in the page source for scrapers
+    const addr = ["v-2krisg", "outlook.com"].join("@");
+    alert("The email service is temporarily unavailable. Contact me directly at " + addr + ".");
   }
 }
 
