@@ -701,3 +701,35 @@ footer {
         text-align: left;
     }
 }
+
+/* the close control and mail button are real <button>s now (keyboard reachable): reset UA styles */
+button.modal__exit {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    line-height: 1;
+}
+button.modal__exit:focus-visible,
+.mail__btn:focus-visible,
+#contrast-toggle:focus-visible {
+    outline: 3px solid #f06449;
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+/* WCAG AA text contrast (2026-09-28): the brand orange #f06449 is 2.9:1 on the light
+   background. Accent TEXT in the light theme uses the same hue darkened to #d43111
+   (4.5:1 on #f5f5f5, 4.9:1 on white). Dark theme keeps #f06449 (4.9:1 on #242424).
+   Buttons/backgrounds keep the brand orange. */
+.secondary,
+.about__category--title {
+    color: #d43111;
+}
+.dark-theme .secondary {
+    color: #f06449;
+}
+/* on the dark cards (#2e2e2e) the brand orange is 4.28:1; a hair lighter passes with margin */
+.dark-theme .about__category--title {
+    color: #f47a62;
+}
