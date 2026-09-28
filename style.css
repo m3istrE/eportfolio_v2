@@ -369,8 +369,9 @@ nav {
 }
 
 .modal__language {
-    width: 25%;
-    padding: 16px;
+    /* 12 skill icons: 6 per row keeps the About panel within the viewport */
+    width: 16.66%;
+    padding: 10px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -491,6 +492,13 @@ nav {
 
 }
 
+/* phone-only close button (see the media query). More specific than Font Awesome's
+   `.fas {display:inline-block}`, which loads later and would otherwise show it on desktop. */
+.modal__about .modal__exit--about {
+    display: none;
+    color: #242424;
+}
+
 .modal__exit {
     position: absolute;
     top: 30px;
@@ -607,4 +615,30 @@ footer {
 .footer__social--link,
 .footer__copyright {
     color: white;
+}
+/* ---- Phones / narrow tablets --------------------------------------------------
+   The site had no breakpoints: the About/Contact popup kept two 50% halves with
+   72px padding and a fixed 700px height, so on a phone the text wrapped one word
+   per line and the icons were pushed out of view. Stack the halves and scroll. */
+@media (max-width: 768px) {
+    .modal {
+        flex-direction: column;
+        width: 94%;
+        height: auto;
+        max-height: 92vh;
+        overflow-y: auto;
+    }
+    .modal__half {
+        width: 100%;
+        padding: 36px 24px;
+    }
+    .modal__language {
+        width: 25%;
+    }
+    /* the original close button lives in the contact half, now BELOW the fold (and both
+       halves are transformed, so it cannot be re-anchored to the popup). Show a second,
+       dark close button at the top of the About half instead. */
+    .modal__about .modal__exit--about {
+        display: block;
+    }
 }
