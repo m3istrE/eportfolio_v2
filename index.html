@@ -3,6 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- CSP: no inline script allowed (event wiring is in index.js). style-src needs
+         'unsafe-inline' because the Font Awesome kit injects <style> blocks. frame-ancestors
+         cannot be set from a meta tag; that needs a real response header (Cloudflare). -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://kit.fontawesome.com https://ka-f.fontawesome.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://ka-f.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com; img-src 'self' data:; connect-src 'self' https://api.emailjs.com https://ka-f.fontawesome.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E Kristoffer Gonzales | Cybersecurity Analyst</title>
@@ -26,13 +31,8 @@
     <link rel="icon" href="./assets/favicon.ico">
     <link rel="stylesheet" href="./style.css?v=20260928i">
     <script src="https://kit.fontawesome.com/535a34443f.js" crossorigin="anonymous"></script>
-    <script src="./index.js?v=20260928j" defer></script>
+    <script src="./index.js?v=20260928k" defer></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
-    </script>
-    <script type="text/javascript">
-        (function () {
-            emailjs.init("jVsHuaxsPFTEcB-o_");
-        })();
     </script>
 </head>
 
@@ -57,11 +57,11 @@
                     link__hover-effect
                     link__hover-effect--black
                     "
-                    onclick="toggleModal(event)"
+                    data-action="toggle-modal"
                     >Contact</a>
                 </li>
                 <li class="nav__link click">
-                    <a href="#" role="button" aria-label="Toggle dark mode" aria-pressed="false" id="contrast-toggle" onclick="toggleContrast(event)" class="
+                    <a href="#" role="button" aria-label="Toggle dark mode" aria-pressed="false" id="contrast-toggle" data-action="toggle-contrast" class="
                     nav__link--anchor
                     link__hover-effect
                     link__hover-effect--black
@@ -95,7 +95,7 @@
             <div class="scroll__icon click"></div>
         </a>
 
-        <button type="button" class="mail__btn click" aria-label="Open contact form" onclick="toggleModal(event)">
+        <button type="button" class="mail__btn click" aria-label="Open contact form" data-action="toggle-modal">
             <i class="fa-solid fa-envelope"></i>            
         </button>
 
@@ -104,8 +104,8 @@
             <div class="modal__half modal__contact">
                 <h3 class="modal__title modal__title--contact">Let's have a chat!</h3>
                 <h4 class="modal__sub-title modal__sub-title--contact">I'm currently open to new opportunities.</h4>
-                <form id="contact__form" onsubmit="contact(event)">
-                    <button type="button" class="modal__exit click" aria-label="Close contact form" onclick="toggleModal(event)"><i class="fas fa-times" aria-hidden="true"></i></button>
+                <form id="contact__form" data-action="contact-submit">
+                    <button type="button" class="modal__exit click" aria-label="Close contact form" data-action="toggle-modal"><i class="fas fa-times" aria-hidden="true"></i></button>
                     <div class="form__item">
                         <label class="form__item--label" for="contact-name"><span class="required" aria-hidden="true">*</span>&nbsp;&nbsp;Name</label>
                         <input type="text" id="contact-name" name="user_name" class="input" autocomplete="name" required>
@@ -246,7 +246,7 @@
                 <div class="footer__social--list">
                     <a href="https://github.com/m3istrE" target="_blank" rel="noopener" class="footer__social--link link__hover-effect link__hover-effect--white">GitHub</a>
                     <a href="https://www.linkedin.com/in/e-k-gonzales/" target="_blank" rel="noopener" class="footer__social--link link__hover-effect link__hover-effect--white">LinkedIn</a>
-                    <a href="#" class="footer__social--link link__hover-effect link__hover-effect--white" onclick="toggleModal(event)">Email</a>
+                    <a href="#" class="footer__social--link link__hover-effect link__hover-effect--white" data-action="toggle-modal">Email</a>
                 </div>
                 <div class="footer__copyright">Copyright &#169; by E Gonzales</div>
             </div>

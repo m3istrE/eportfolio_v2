@@ -1,3 +1,6 @@
+// EmailJS public key (public by design; it can only trigger this site's own template)
+emailjs.init("jVsHuaxsPFTEcB-o_");
+
 async function contact(event) {
   event.preventDefault();
   const loading = document.querySelector('.modal__overlay--loading');
@@ -60,3 +63,9 @@ function toggleContrast(event) {
 try { if (localStorage.getItem("theme") === "dark") applyContrast(true); } catch (e) { /* private mode */ }
 
 //how to use async instead of then for sending an email?
+
+// Event wiring lives here, not in inline on* attributes, so the Content-Security-Policy
+// can forbid inline script ('unsafe-inline' is NOT allowed in script-src).
+document.querySelectorAll('[data-action="toggle-modal"]').forEach((el) => el.addEventListener("click", toggleModal));
+document.querySelectorAll('[data-action="toggle-contrast"]').forEach((el) => el.addEventListener("click", toggleContrast));
+document.querySelector('[data-action="contact-submit"]')?.addEventListener("submit", contact);
