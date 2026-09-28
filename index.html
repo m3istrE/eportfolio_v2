@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E Kristoffer Gonzales</title>
+    <link rel="icon" href="./assets/favicon.ico">
     <link rel="stylesheet" href="./style.css">
     <script src="https://kit.fontawesome.com/535a34443f.js" crossorigin="anonymous"></script>
     <script src="./index.js" defer></script>
@@ -31,10 +32,10 @@
                     nav__link--anchor
                     link__hover-effect
                     link__hover-effect--black
-                    ">About</a>
+                    " onclick="toggleModal(event)">About</a>
                 </li>
                 <li class="nav__link">
-                    <a href="#" class="
+                    <a href="#projects" class="
                     nav__link--anchor
                     link__hover-effect
                     link__hover-effect--black
@@ -70,7 +71,7 @@
                     Here's more <span class="secondary click" onclick="toggleModal(event)">about me.</span>
                 </p>
                 <div class="social__list">
-                    <a href="" class="social__link click">
+                    <a href="https://github.com/m3istrE" target="_blank" rel="noopener" class="social__link click" aria-label="GitHub">
                         <i class="fa-brands fa-github"></i>
                     </a>
                     <a href="" class="social__link click">
@@ -97,9 +98,9 @@
                 <h4 class="modal__sub-title modal__sub-title--about">Frontend Software Engineer</h4>
                 <p class="modal__para">
                     I'm a 31 year-old Filipino <span class="secondary">frontend software engineer</span> with a strong
-                    passion for developing websistes with great <span class="secondary">user experiences</span>.
+                    passion for developing websites with great <span class="secondary">user experiences</span>.
                     <br>
-                    I am currently work on extremely difficuly engineering problems and learn from a team consisting of
+                    I currently work on extremely difficult engineering problems and learn from a team consisting of
                     some of the most <span class="secondary">talented</span> and <span
                         class="secondary">experienced</span> software engineers everyday.
                 </p>
@@ -243,7 +244,7 @@
                     <img src="./assets/logo-black.svg" class="footer__img" alt="">
                 </figure>
                 <div class="footer__social--list">
-                    <a href="" class="footer__social--link link__hover-effect link__hover-effect--white">Github</a>
+                    <a href="https://github.com/m3istrE" target="_blank" rel="noopener" class="footer__social--link link__hover-effect link__hover-effect--white">GitHub</a>
                     <a href="" class="footer__social--link link__hover-effect link__hover-effect--white">LinkedIn</a>
                     <a href="" class="footer__social--link link__hover-effect link__hover-effect--white" onclick="toggleModal(event)">Email</a>
                     <a href="" class="footer__social--link link__hover-effect link__hover-effect--white">Resume</a>
