@@ -327,8 +327,8 @@ nav {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
-    max-width: 1100px;
-    height: 700px;    
+    max-width: 560px;
+    height: auto;    
     border-radius: 20px;
     overflow: hidden;
     display: flex;
@@ -344,7 +344,7 @@ nav {
 }
 
 .modal__half {
-    width: 50%;
+    width: 100%;
     padding: 40px 72px;
     display: flex;
     flex-direction: column;
@@ -353,63 +353,16 @@ nav {
     transition: all 300ms ease-in;
 }
 
-.modal--open .modal__about,
+
+
+
+
+
+
+
+
 .modal--open .modal__contact {
     transform: translate(0%);
-}
-
-.modal__about {
-    background-color: rgb(245, 245, 245);
-    transform: translateX(-110%);
-}
-
-.modal__languages {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.modal__language {
-    /* 12 skill icons: 6 per row keeps the About panel within the viewport */
-    width: 16.66%;
-    padding: 10px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: all 300ms ease;
-}
-
-/* Hover/tap label. Was positioned from the icon's LEFT edge and allowed to wrap, so
-   "Home Assistant" broke onto two lines on top of its own icon in narrow phone columns.
-   Centred under the icon, single line, on a pill so it stays legible over neighbours. */
-.language__name {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translate(-50%, -4px) scale(0);
-    white-space: nowrap;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 2px 8px;
-    border-radius: 10px;
-    background-color: #242424;
-    color: #fff;
-    z-index: 5;
-    pointer-events: none;
-    transition: all 300ms ease;
-}
-
-.modal__language:hover .language__name {
-    transform: translate(-50%, -4px) scale(1);
-}
-
-.modal__language:hover {
-    filter: brightness(80%);
-    transform: scale(0.9);
-}
-
-.modal__language--img {
-    width: 100%;
 }
 
 .modal__contact {
@@ -504,12 +457,6 @@ nav {
 
 }
 
-/* phone-only close button (see the media query). More specific than Font Awesome's
-   `.fas {display:inline-block}`, which loads later and would otherwise show it on desktop. */
-.modal__about .modal__exit--about {
-    display: none;
-    color: #242424;
-}
 
 .modal__exit {
     position: absolute;
@@ -651,20 +598,87 @@ footer {
         width: 100%;
         padding: 36px 24px;
     }
-    .modal__language {
-        width: 25%;
+}
+
+/* ---- About section (was the left half of the popup until 2026-09-28) ---------------- */
+#about .section__title {
+    margin-bottom: 12px;
+}
+.about__sub-title {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 24px;
+}
+.about__para {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.8;
+}
+.about__skills-title {
+    text-align: center;
+    margin: 48px 0 20px;
+}
+.about__skills {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 28px 16px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.about__skill {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    transition: all 300ms ease;
+}
+.about__skill--img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+.about__skill:hover {
+    transform: scale(0.92);
+    filter: brightness(85%);
+}
+/* hover/tap label: centred, single line, on a pill (see 2026-09-28 Home Assistant fix) */
+.about__skill--name {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 2px) scale(0);
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background-color: #242424;
+    color: #fff;
+    z-index: 5;
+    pointer-events: none;
+    transition: all 300ms ease;
+}
+.about__skill:hover .about__skill--name {
+    transform: translate(-50%, 2px) scale(1);
+}
+.dark-theme .about__sub-title,
+.dark-theme .about__para,
+.dark-theme .about__skills-title {
+    color: white;
+}
+/* black logos (Linux, Bash) vanish on the dark section: give every icon a light tile */
+.dark-theme .about__skill--img {
+    background-color: #f5f5f5;
+    border-radius: 12px;
+    padding: 6px;
+}
+@media (max-width: 768px) {
+    .about__skills {
+        grid-template-columns: repeat(4, 1fr);
     }
-    /* the original close button lives in the contact half, now BELOW the fold (and both
-       halves are transformed, so it cannot be re-anchored to the popup). Show a second,
-       dark close button at the top of the About half instead. */
-    .modal__about .modal__exit--about {
-        display: block;
-        top: 14px;
-        right: 16px;
-        font-size: 28px;
-    }
-    /* keep the About heading clear of that close button */
-    .modal__title--about {
-        padding-right: 36px;
+    .about__para {
+        font-size: 16px;
+        text-align: left;
     }
 }
