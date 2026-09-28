@@ -621,6 +621,13 @@ footer {
    72px padding and a fixed 700px height, so on a phone the text wrapped one word
    per line and the icons were pushed out of view. Stack the halves and scroll. */
 @media (max-width: 768px) {
+    /* the hero is absolutely centred on the viewport; on short phones it rose into the
+       nav bar and covered it, so "About"/"Contact" could not be tapped. Flow it below. */
+    .header {
+        position: static;
+        transform: none;
+        padding: 24px 24px 96px;
+    }
     .modal {
         flex-direction: column;
         width: 94%;
@@ -640,5 +647,12 @@ footer {
        dark close button at the top of the About half instead. */
     .modal__about .modal__exit--about {
         display: block;
+        top: 14px;
+        right: 16px;
+        font-size: 28px;
+    }
+    /* keep the About heading clear of that close button */
+    .modal__title--about {
+        padding-right: 36px;
     }
 }
