@@ -29,7 +29,7 @@
     <meta name="twitter:description" content="Cybersecurity analyst. Homelab work in monitoring, vulnerability management and security automation across Linux, Windows, Proxmox, Docker and Cloudflare.">
     <meta name="twitter:image" content="https://m3istr-e.com/assets/og-image.png">
     <link rel="icon" href="./assets/favicon.ico">
-    <link rel="stylesheet" href="./style.css?v=20260928i">
+    <link rel="stylesheet" href="./style.css?v=20260929b">
     <script src="https://kit.fontawesome.com/535a34443f.js" crossorigin="anonymous"></script>
     <script src="./index.js?v=20260928k" defer></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
@@ -50,6 +50,13 @@
                     link__hover-effect
                     link__hover-effect--black
                     " >About</a>
+                </li>
+                <li class="nav__link">
+                    <a href="#projects" class="
+                    nav__link--anchor
+                    link__hover-effect
+                    link__hover-effect--black
+                    ">Projects</a>
                 </li>
                 <li class="nav__link">
                     <a href="#" class="
@@ -232,6 +239,53 @@
                             </figure>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="container">
+            <div class="row">
+                <h1 class="section__title">Homelab <span class="secondary">projects</span></h1>
+                <p class="projects__intro">Real systems I run and defend at home. Details are generalized: no hostnames, addresses or identifiers.</p>
+                <div class="projects__list">
+                    <article class="project-card">
+                        <h3 class="project-card__title">Threat-Prioritized Vulnerability Management</h3>
+                        <ul class="project-card__stack" aria-label="Technologies">
+                            <li>Trivy</li>
+                            <li>CISA KEV</li>
+                            <li>GitHub Advisories</li>
+                            <li>n8n</li>
+                            <li>Python</li>
+                        </ul>
+                        <p class="project-card__desc">Nightly Trivy scans of every container image and Linux host, diffed against a baseline and enriched with the CISA Known Exploited Vulnerabilities catalog. Findings are ranked <strong>Actively Exploited → Critical → High</strong>, so an exploited “High” outranks every “Critical”, and anything an auto-updater already covers is filtered out, leaving only what nothing else will fix. A companion watch matches vendor and GitHub security advisories against the live software inventory.</p>
+                        <p class="project-card__result">~2,400 raw findings reduced to ~17 component-level actions</p>
+                    </article>
+                    <article class="project-card">
+                        <h3 class="project-card__title">AI-Agent Remediation Pipelines</h3>
+                        <ul class="project-card__stack" aria-label="Technologies">
+                            <li>n8n</li>
+                            <li>Headless AI agent</li>
+                            <li>Python</li>
+                            <li>Home Assistant</li>
+                            <li>Discord</li>
+                        </ul>
+                        <p class="project-card__desc">Eleven monitors (vulnerabilities, backup freshness, TLS renewal, service health, VPN-dependent containers and more) hand confirmed failures to a headless AI agent that diagnoses the fault and, where it is safe, fixes it. Destructive actions pause for one-tap approval on a phone, third-party advisory text is framed as untrusted input to resist prompt injection, and every run files a report that is posted exactly once, after delivery succeeds.</p>
+                        <p class="project-card__result">11 pipelines · approval-gated · prompt-injection aware</p>
+                    </article>
+                    <article class="project-card">
+                        <h3 class="project-card__title">Zero-Trust Exposure &amp; Hardening</h3>
+                        <ul class="project-card__stack" aria-label="Technologies">
+                            <li>Cloudflare Tunnel</li>
+                            <li>Zero Trust Access</li>
+                            <li>WAF</li>
+                            <li>CrowdSec</li>
+                            <li>Pi-hole</li>
+                        </ul>
+                        <p class="project-card__desc">Self-hosted services are published through Cloudflare Tunnels instead of opened ports, with admin apps behind Zero Trust Access and WAF rules (including geo restrictions) in front. CrowdSec and Pi-hole DNS filtering cover the edge, and API tokens rotate automatically every 90 days through a separate least-privilege rotator. This site ships a strict Content-Security-Policy with no inline script, HSTS and hardened response headers.</p>
+                        <p class="project-card__result">No inline script · 7 security headers · 90-day token rotation</p>
+                    </article>
                 </div>
             </div>
         </div>
