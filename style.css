@@ -268,10 +268,6 @@ nav, .scroll, .header {
     filter: invert(1);
 } */
 
-.dark-theme #personal-logo {
-    filter: none;
-}
-
 .dark-theme .scroll__icon {
     border-color: white;
 }
@@ -295,10 +291,48 @@ nav {
     padding: 0 20px;
 }
 
+/* Logo: knight badge (inline SVG, fixed colors) + name as text so it stays readable at nav size */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo--stacked {
+    flex-direction: column;
+    gap: 8px;
+}
+
 #personal-logo {
-    height: 100px;
-    width: 100px;
-    filter: invert(1);
+    height: 72px;
+    width: auto;
+}
+
+.logo__name {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #242424;
+    white-space: nowrap;
+}
+
+.dark-theme .logo__name,
+.logo__name--footer {
+    color: #fff;
+}
+
+/* Desktop: the hero is vertically centered, so on short windows its heading starts ~74px down.
+   Keep the logo above that (the old logo's drawing ended at ~73px). */
+@media (min-width: 769px) {
+    nav figure {
+        align-self: flex-start;
+        margin-top: 6px;
+    }
+
+    #personal-logo {
+        height: 64px;
+    }
 }
 
 .nav__link--list {
@@ -560,7 +594,8 @@ footer {
 }
 
 .footer__img {
-    width: 70px;
+    height: 84px;
+    width: auto;
 }
 
 .footer__social--list {
@@ -581,9 +616,13 @@ footer {
    per line and the icons were pushed out of view. Stack the halves and scroll. */
 @media (max-width: 768px) {
     /* four nav items (About, Projects, Contact, theme) + a 100px logo overflowed phones */
+    /* phones: badge only; the name would push the nav past the screen edge */
     #personal-logo {
         height: 72px;
-        width: 72px;
+        width: auto;
+    }
+    nav .logo__name {
+        display: none;
     }
     .nav__link {
         margin: 0 7px;
