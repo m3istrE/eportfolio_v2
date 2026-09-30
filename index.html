@@ -31,7 +31,7 @@
     <link rel="icon" href="./assets/favicon.ico?v=20260929" sizes="48x48">
     <link rel="icon" href="./assets/favicon.svg?v=20260929" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png?v=20260929">
-    <link rel="stylesheet" href="./style.css?v=20260930h">
+    <link rel="stylesheet" href="./style.css?v=20260930j">
     <script src="https://kit.fontawesome.com/535a34443f.js" crossorigin="anonymous"></script>
     <script src="./index.js?v=20260930d" defer></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -397,6 +397,7 @@
                         </ul>
                         <p class="project-card__desc">Nightly Trivy scans of every container image and Linux host, diffed against a baseline and enriched with the CISA Known Exploited Vulnerabilities catalog. Findings are ranked <strong>Actively Exploited → Critical → High</strong>, so an exploited “High” outranks every “Critical”, and anything an auto-updater already covers is filtered out, leaving only what nothing else will fix. A companion watch matches vendor and GitHub security advisories against the live software inventory.</p>
                         <p class="project-card__result">~2,400 raw findings reduced to ~17 component-level actions</p>
+                        <a class="project-card__link secondary" href="./writeups/kev-first-triage.html">Read the write-up &rarr;</a>
                     </article>
                     <article class="project-card">
                         <h3 class="project-card__title">AI-Agent Remediation Pipelines</h3>
@@ -409,6 +410,7 @@
                         </ul>
                         <p class="project-card__desc">Eleven monitors (vulnerabilities, backup freshness, TLS renewal, service health, VPN-dependent containers and more) hand confirmed failures to a headless AI agent that diagnoses the fault and, where it is safe, fixes it. Destructive actions pause for one-tap approval on a phone, third-party advisory text is framed as untrusted input to resist prompt injection, and every run files a report that is posted exactly once, after delivery succeeds.</p>
                         <p class="project-card__result">11 pipelines · approval-gated · prompt-injection aware</p>
+                        <a class="project-card__link secondary" href="./writeups/agent-remediation.html">Read the write-up &rarr;</a>
                     </article>
                     <article class="project-card">
                         <h3 class="project-card__title">Zero-Trust Exposure &amp; Hardening</h3>
@@ -421,7 +423,39 @@
                         </ul>
                         <p class="project-card__desc">Self-hosted services are published through Cloudflare Tunnels instead of opened ports, with admin apps behind Zero Trust Access and WAF rules (including geo restrictions) in front. CrowdSec and Pi-hole DNS filtering cover the edge, and API tokens rotate automatically every 90 days through a separate least-privilege rotator. This site ships a strict Content-Security-Policy with no inline script, HSTS and hardened response headers.</p>
                         <p class="project-card__result">No inline script · 7 security headers · 90-day token rotation</p>
+                        <a class="project-card__link secondary" href="./writeups/token-rotation.html">Read the write-up &rarr;</a>
                     </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="writeups">
+        <div class="container">
+            <div class="row">
+                <h1 class="section__title">Homelab <span class="secondary">write-ups</span></h1>
+                <p class="projects__intro">How those systems work, and what went wrong while building them.</p>
+                <div class="writeups__list">
+                    <a class="writeup-card" href="./writeups/kev-first-triage.html">
+                        <h3 class="writeup-card__title">Ranking vulnerabilities by exploitation, not severity</h3>
+                        <p class="writeup-card__desc">How a nightly container scan went from 4,000+ findings to about seventeen actions, and why a severity filter was throwing away the most dangerous ones.</p>
+                        <span class="writeup-card__more secondary">Read the write-up &rarr;</span>
+                    </a>
+                    <a class="writeup-card" href="./writeups/agent-remediation.html">
+                        <h3 class="writeup-card__title">An AI agent that fixes my homelab, with a human on every destructive step</h3>
+                        <p class="writeup-card__desc">Eleven monitors hand confirmed failures to a headless agent. The engineering is in the boundaries: approval gates, untrusted input and delivery you can prove.</p>
+                        <span class="writeup-card__more secondary">Read the write-up &rarr;</span>
+                    </a>
+                    <a class="writeup-card" href="./writeups/secret-scanning.html">
+                        <h3 class="writeup-card__title">Scanning for secrets before code goes public</h3>
+                        <p class="writeup-card__desc">Pattern scanners find secrets that look like secrets. The rest of the method is for the ones that don't, and for the scanner's own output.</p>
+                        <span class="writeup-card__more secondary">Read the write-up &rarr;</span>
+                    </a>
+                    <a class="writeup-card" href="./writeups/token-rotation.html">
+                        <h3 class="writeup-card__title">90-day API token rotation with a token that can do nothing else</h3>
+                        <p class="writeup-card__desc">A two-token design: the widely-shared credential can't create credentials, and the one that can is used for nothing but rotation.</p>
+                        <span class="writeup-card__more secondary">Read the write-up &rarr;</span>
+                    </a>
                 </div>
             </div>
         </div>

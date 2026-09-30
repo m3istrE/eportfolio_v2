@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://kit.fontawesome.com https://ka-f.fontawesome.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://ka-f.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com; img-src 'self' data:; connect-src 'self' https://ka-f.fontawesome.com; frame-src; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>90-day API token rotation with a token that can do nothing else | E Kristoffer Gonzales</title>
+    <meta name="description" content="A two-token design: the widely-shared credential can&#x27;t create credentials, and the one that can is used for nothing but rotation.">
+    <link rel="canonical" href="https://m3istr-e.com/writeups/token-rotation.html">
+    <meta name="theme-color" content="#f5f5f5">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://m3istr-e.com/writeups/token-rotation.html">
+    <meta property="og:site_name" content="E Kristoffer Gonzales">
+    <meta property="og:title" content="90-day API token rotation with a token that can do nothing else">
+    <meta property="og:description" content="A two-token design: the widely-shared credential can&#x27;t create credentials, and the one that can is used for nothing but rotation.">
+    <meta property="og:image" content="https://m3istr-e.com/assets/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="90-day API token rotation with a token that can do nothing else">
+    <meta name="twitter:description" content="A two-token design: the widely-shared credential can&#x27;t create credentials, and the one that can is used for nothing but rotation.">
+    <meta name="twitter:image" content="https://m3istr-e.com/assets/og-image.png">
+    <link rel="icon" href="../assets/favicon.ico?v=20260929" sizes="48x48">
+    <link rel="icon" href="../assets/favicon.svg?v=20260929" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png?v=20260929">
+    <link rel="stylesheet" href="../style.css?v=20260930j">
+    <script src="https://kit.fontawesome.com/535a34443f.js" crossorigin="anonymous"></script>
+    <script src="../index.js?v=20260930d" defer></script>
+</head>
+
+<body class="article-page">
+    <nav>
+        <a class="logo" href="#top" aria-label="E Gonzales, back to top">
+            <svg id="personal-logo" class="logo__badge" aria-hidden="true" focusable="false" viewBox="-6 0 212 230" xmlns="http://www.w3.org/2000/svg"><path fill="#1e1e1e" d="M100 4.0 L190.0 30.0 V104.0 C190.0 160.0 150.0 204.0 100 226.0 C50.0 204.0 10.0 160.0 10.0 104.0 V30.0 Z"/><path fill="#f06449" d="M100 12.0 L182.0 34.0 V102.4 C182.0 155.2 148.4 196.0 100 214.4 C51.6 196.0 18.0 155.2 18.0 102.4 V34.0 Z"/><path fill="none" stroke="#1e1e1e" stroke-width="3" stroke-linejoin="round" d="M100 21.0 L173.0 38.5 V100.6 C173.0 149.8 146.6 187.0 100 201.3 C53.4 187.0 27.0 149.8 27.0 100.6 V38.5 Z"/><ellipse cx="22.5" cy="46" rx="4.4" ry="1.9" transform="rotate(55 22.5 46)" fill="#1e1e1e"/><ellipse cx="22.5" cy="59" rx="4.4" ry="1.9" transform="rotate(55 22.5 59)" fill="#1e1e1e"/><ellipse cx="22.5" cy="72" rx="4.4" ry="1.9" transform="rotate(55 22.5 72)" fill="#1e1e1e"/><ellipse cx="22.5" cy="85" rx="4.4" ry="1.9" transform="rotate(55 22.5 85)" fill="#1e1e1e"/><ellipse cx="22.5" cy="98" rx="4.4" ry="1.9" transform="rotate(55 22.5 98)" fill="#1e1e1e"/><ellipse cx="22.5" cy="111" rx="4.4" ry="1.9" transform="rotate(55 22.5 111)" fill="#1e1e1e"/><ellipse cx="22.5" cy="124" rx="4.4" ry="1.9" transform="rotate(55 22.5 124)" fill="#1e1e1e"/><ellipse cx="177.5" cy="46" rx="4.4" ry="1.9" transform="rotate(-55 177.5 46)" fill="#1e1e1e"/><ellipse cx="177.5" cy="59" rx="4.4" ry="1.9" transform="rotate(-55 177.5 59)" fill="#1e1e1e"/><ellipse cx="177.5" cy="72" rx="4.4" ry="1.9" transform="rotate(-55 177.5 72)" fill="#1e1e1e"/><ellipse cx="177.5" cy="85" rx="4.4" ry="1.9" transform="rotate(-55 177.5 85)" fill="#1e1e1e"/><ellipse cx="177.5" cy="98" rx="4.4" ry="1.9" transform="rotate(-55 177.5 98)" fill="#1e1e1e"/><ellipse cx="177.5" cy="111" rx="4.4" ry="1.9" transform="rotate(-55 177.5 111)" fill="#1e1e1e"/><ellipse cx="177.5" cy="124" rx="4.4" ry="1.9" transform="rotate(-55 177.5 124)" fill="#1e1e1e"/><path fill="#1e1e1e" d="M46 52 L47.68 56.32 L52 58 L47.68 59.68 L46 64 L44.32 59.68 L40 58 L44.32 56.32 Z"/><path fill="#1e1e1e" d="M154 52 L155.68 56.32 L160 58 L155.68 59.68 L154 64 L152.32 59.68 L148 58 L152.32 56.32 Z"/><g clip-path="url(#nav-clip)"><g transform="rotate(-40 100 162)"><path fill="#e4e7ec" stroke="#1e1e1e" stroke-width="2.5" stroke-linejoin="round" d="M95 100 H105 V218 L100 228 L95 218 Z"/><path fill="none" stroke="#a9b0ba" stroke-width="1.6" d="M100 104 V216"/><rect x="86" y="94" width="28" height="6.5" rx="2.5" fill="#f5b53d" stroke="#1e1e1e" stroke-width="2.5"/><rect x="96.5" y="77" width="7" height="17" rx="2" fill="#c2412c" stroke="#1e1e1e" stroke-width="2.5"/><circle cx="100" cy="74" r="5.2" fill="#f5b53d" stroke="#1e1e1e" stroke-width="2.5"/></g><g transform="rotate(40 100 162)"><path fill="#e4e7ec" stroke="#1e1e1e" stroke-width="2.5" stroke-linejoin="round" d="M95 100 H105 V218 L100 228 L95 218 Z"/><path fill="none" stroke="#a9b0ba" stroke-width="1.6" d="M100 104 V216"/><rect x="86" y="94" width="28" height="6.5" rx="2.5" fill="#f5b53d" stroke="#1e1e1e" stroke-width="2.5"/><rect x="96.5" y="77" width="7" height="17" rx="2" fill="#c2412c" stroke="#1e1e1e" stroke-width="2.5"/><circle cx="100" cy="74" r="5.2" fill="#f5b53d" stroke="#1e1e1e" stroke-width="2.5"/></g></g><clipPath id="nav-clip"><path d="M100 21.0 L173.0 38.5 V100.6 C173.0 149.8 146.6 187.0 100 201.3 C53.4 187.0 27.0 149.8 27.0 100.6 V38.5 Z"/></clipPath><g clip-path="url(#nav-clip)"><path fill="#1e1e1e" d="M28 200 L36 164 Q44 146 70 140 L100 150 L130 140 Q156 146 164 164 L172 200 Z"/><path fill="#f7f3ea" d="M78 142 L100 150 L122 142 L112 200 L88 200 Z"/><path fill="#f06449" d="M70 140 L78 142 L92 178 L82 170 Z M130 140 L122 142 L108 178 L118 170 Z"/><path fill="#f06449" stroke="#1e1e1e" stroke-width="2" d="M100 157 L88 151 L88 165 Z M100 157 L112 151 L112 165 Z"/><rect x="96" y="153" width="8" height="8" rx="2" fill="#c2412c" stroke="#1e1e1e" stroke-width="2"/><circle cx="100" cy="176" r="2.4" fill="#1e1e1e"/></g><clipPath id="nav-right"><rect x="100" y="0" width="100" height="200"/></clipPath><path fill="#e4e7ec" stroke="#1e1e1e" stroke-width="3.5" stroke-linejoin="round" d="M70 74 Q70 58 86 56 H114 Q130 58 130 74 V124 Q130 136 118 140 L100 146 L82 140 Q70 136 70 124 Z"/><path fill="#a9b0ba" clip-path="url(#nav-right)" d="M70 74 Q70 58 86 56 H114 Q130 58 130 74 V124 Q130 136 118 140 L100 146 L82 140 Q70 136 70 124 Z"/><path fill="none" stroke="#1e1e1e" stroke-width="3.5" stroke-linejoin="round" d="M70 74 Q70 58 86 56 H114 Q130 58 130 74 V124 Q130 136 118 140 L100 146 L82 140 Q70 136 70 124 Z"/><path fill="#1e1e1e" d="M72 82 H128 V99 Q115 95 100 101 Q85 95 72 99 Z"/><path fill="#ff3b3b" d="M76 86 L96 89 L94 95 L78 93 Z M124 86 L104 89 L106 95 L122 93 Z"/><rect x="81.5" y="108" width="3.5" height="24" rx="1.5" fill="#1e1e1e"/><rect x="90.0" y="108" width="3.5" height="24" rx="1.5" fill="#1e1e1e"/><rect x="98.5" y="108" width="3.5" height="24" rx="1.5" fill="#1e1e1e"/><rect x="107.0" y="108" width="3.5" height="24" rx="1.5" fill="#1e1e1e"/><rect x="115.5" y="108" width="3.5" height="24" rx="1.5" fill="#1e1e1e"/><path fill="none" stroke="#1e1e1e" stroke-width="2.5" d="M100 56 V82"/><path fill="#f5b53d" stroke="#1e1e1e" stroke-width="3" stroke-linejoin="round" d="M72 58 L70 36 L84 46 L92 28 L100 40 L108 28 L116 46 L130 36 L128 58 Z"/><path fill="#d48f1c" clip-path="url(#nav-right)" d="M72 58 L70 36 L84 46 L92 28 L100 40 L108 28 L116 46 L130 36 L128 58 Z"/><path fill="none" stroke="#1e1e1e" stroke-width="3" stroke-linejoin="round" d="M72 58 L70 36 L84 46 L92 28 L100 40 L108 28 L116 46 L130 36 L128 58 Z"/><circle cx="80" cy="50" r="3.2" fill="#ff3b3b" stroke="#1e1e1e" stroke-width="1.6"/><circle cx="100" cy="49" r="3.2" fill="#ff3b3b" stroke="#1e1e1e" stroke-width="1.6"/><circle cx="120" cy="50" r="3.2" fill="#ff3b3b" stroke="#1e1e1e" stroke-width="1.6"/></svg><span class="logo__name" aria-hidden="true">E Gonzales</span>
+        </a>
+        <ul class="nav__link--list">
+                <li class="nav__link">
+                    <a href="../#about" class="nav__link--anchor link__hover-effect link__hover-effect--black">About</a>
+                </li>
+                <li class="nav__link">
+                    <a href="../#projects" class="nav__link--anchor link__hover-effect link__hover-effect--black">Projects</a>
+                </li>
+                <li class="nav__link">
+                    <a href="../#writeups" class="nav__link--anchor link__hover-effect link__hover-effect--black">Write-ups</a>
+                </li>
+                <li class="nav__link nav__link--resume">
+                    <a href="../resume.pdf" class="nav__link--anchor link__hover-effect link__hover-effect--black">Resume</a>
+                </li>
+                <li class="nav__link click">
+                    <a href="#" role="button" aria-label="Toggle dark mode" aria-pressed="false" id="contrast-toggle" data-action="toggle-contrast" class="nav__link--anchor link__hover-effect link__hover-effect--black"><i class="fa-solid fa-circle-half-stroke"></i></a>
+                </li>
+        </ul>
+    </nav>
+
+    <main class="article-main">
+        <article class="article">
+            <a class="article__back secondary" href="../#writeups">&larr; All write-ups</a>
+            <h1 class="article__title">90-day API token rotation with a token that can do nothing else</h1>
+            <p class="article__meta">Homelab write-up · September 2026 · 3 min read</p>
+            <ul class="project-card__stack article__tags" aria-label="Technologies"><li>Cloudflare API</li><li>Least privilege</li><li>Python</li><li>n8n</li></ul>
+            <p class="article__note">Details are generalized: no hostnames, addresses, identifiers or credentials.</p>
+<p class="article__lead">A working API token is used by scripts, automation and monitoring, so it gets copied into a lot of places. If that token can also create tokens, any one of those copies is a full account takeover. This is the two-token design I use to rotate every 90 days without giving the working token that power.</p>
+
+<h2>The problem</h2>
+<p>Cloudflare fronts my homelab: DNS, tunnels, Zero Trust Access and WAF rules. Several consumers need an API token to manage them: maintenance scripts, the n8n automation platform, and the agent that renews and checks TLS certificates.</p>
+<p>Long-lived tokens are a liability, so they should rotate. But to rotate itself, a token needs permission to edit API tokens. Whoever holds that permission can mint a new token with <em>any</em> scope. Granting it to the token that every script reads makes the least-protected copy the most powerful credential in the account.</p>
+
+<h2>The design: two tokens</h2>
+<div class="article__table-wrap">
+<table class="article__table">
+    <thead><tr><th>Token</th><th>Permissions</th><th>Who can read it</th></tr></thead>
+    <tbody>
+        <tr><td><strong>Main</strong></td><td>The working scopes (DNS, tunnels, Access, transform rules). <strong>No</strong> token permissions.</td><td>Scripts, automation, monitoring</td></tr>
+        <tr><td><strong>Rotator</strong></td><td><strong>Only</strong> "API Tokens: Edit", restricted to the homelab's IP address</td><td>The rotation script, nothing else</td></tr>
+    </tbody>
+</table>
+</div>
+<p>A leaked main token can change DNS but cannot create credentials. The rotator can create credentials, but it's never used for anything else, and it only works from home.</p>
+
+<h2>The rotation flow</h2>
+<ol class="article__steps">
+    <li><strong>Check.</strong> A daily scheduled job runs the rotation script in "rotate if due" mode. Most days it does nothing.</li>
+    <li><strong>Roll the main token.</strong> The rotator calls the API's <em>roll</em> operation, which changes the token's secret value and leaves its permissions alone.</li>
+    <li><strong>Save safely.</strong> The raw API response is written to an owner-only file before it's parsed, so a parsing bug can't lose the only copy of a new secret. The token file itself is replaced atomically.</li>
+    <li><strong>Update every consumer.</strong> The new value goes to the credential file and into the automation platform's encrypted credential store.</li>
+    <li><strong>Prove it.</strong> A real call through the automation platform must succeed with the new value, and the old value must be rejected. The recorded rotation date is written only after both checks pass.</li>
+    <li><strong>Rotate the rotator.</strong> Once the main token is proven, the rotator rolls its own value the same way.</li>
+    <li><strong>Report on change only.</strong> Discord gets a green message on rotation and a red one on failure, with repair steps. If the script's output can't be parsed at all, the alert says "could not run" rather than staying silent.</li>
+</ol>
+
+<h2>What was harder than expected</h2>
+<h3>The rotator can't be created by API</h3>
+<p>A token that can edit tokens still can't use the API to create another token with that same power. The API refuses sub-tokens that could manage tokens. So creating the rotator was a one-time manual step in the dashboard. After that, the rotator can roll both tokens by API indefinitely.</p>
+
+<h3>Taking power away needs the other token</h3>
+<p>Removing the token permission from the main token, and later adding a narrowly scoped permission it needed, can't be done with the main token itself. The rotator does it with a full-definition update: every other scope and the IP restriction are sent back unchanged, and only the one permission differs. It's worth checking every credential you hold before concluding something can't be automated.</p>
+
+<h3>Not every token can rotate itself</h3>
+<p>Some providers offer no API to regenerate a token. GitHub's fine-grained personal access tokens are one example. Those get the narrowest scope that works, a fixed expiry date, and a reminder well before it, which is the honest fallback when automation isn't possible.</p>
+
+<h2>Result</h2>
+<p>Both tokens rotate every 90 days with nobody touching them, every rotation is proven end to end before it's recorded, and the credential that's copied everywhere can't be used to create new credentials. The general principle: <strong>separate the power to do the work from the power to issue credentials, and never let the widely-shared credential hold the second one.</strong></p>
+
+            <aside class="article__more">
+                <h2>More write-ups</h2>
+                <ul><li><a class="secondary" href="./kev-first-triage.html">Ranking vulnerabilities by exploitation, not severity</a></li><li><a class="secondary" href="./agent-remediation.html">An AI agent that fixes my homelab, with a human on every destructive step</a></li><li><a class="secondary" href="./secret-scanning.html">Scanning for secrets before code goes public</a></li></ul>
+            </aside>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="row footer__row">
+                <a class="logo logo--stacked" href="#top" aria-label="Back to top">
+                    <svg class="footer__img logo__badge" aria-hidden="true" focusable="false" viewBox="-6 0 212 230" xmlns="http://www.w3.org/2000/svg"><path fill="#1e1e1e" d="M100 4.0 L190.0 30.0 V104.0 C190.0 160.0 150.0 204.0 100 226.0 C50.0 204.0 10.0 160.0 10.0 104.0 V30.0 Z"/><path fill="#f06449" d="M100 12.0 L182.0 34.0 V102.4 C182.0 155.2 148.4 196.0 100 214.4 C51.6 196.0 18.0 155.2 18.0 102.4 V34.0 Z"/><path fill="none" stroke="#1e1e1e" stroke-width="3" stroke-linejoin="round" d="M100 21.0 L173.0 38.5 V100.6 C173.0 149.8 146.6 187.0 100 201.3 C53.4 187.0 27.0 149.8 27.0 100.6 V38.5 Z"/><ellipse cx="22.5" cy="46" rx="4.4" ry="1.9" transform="rotate(55 22.5 46)" fill="#1e1e1e"/><ellipse cx="22.5" cy="59" rx="4.4" ry="1.9" transform="rotate(55 22.5 59)" fill="#1e1e1e"/><ellipse cx="22.5" cy="72" rx="4.4" ry="1.9" transform="rotate(55 22.5 72)" fill="#1e1e1e"/><ellipse cx="22.5" cy="85" rx="4.4" ry="1.9" transform="rotate(55 22.5 85)" fill="#1e1e1e"/><ellipse cx="22.5" cy="98" rx="4.4" ry="1.9" transform="rotate(55 22.5 98)" fill="#1e1e1e"/><ellipse cx="22.5" cy="111" rx="4.4" ry="1.9" transform="rotate(55 22.5 111)" fill="#1e1e1e"/><ellipse cx="22.5" cy="124" rx="4.4" ry="1.9" transform="rotate(55 22.5 124)" fill="#1e1e1e"/><ellipse cx="177.5" cy="46" rx="4.4" ry="1.9" transform="rotate(-55 177.5 46)" fill="#1e1e1e"/><ellipse cx="177.5" cy="59" rx="4.4" ry="1.9" transform="rotate(-55 177.5 59)" fill="#1e1e1e"/><ellipse cx="177.5" cy="72" rx="4.4" ry="1.9" transform="rotate(-55 177.5 72)" fill="#1e1e1e"/><ellipse cx="177.5" cy="85" rx="4.4" ry="1.9" transform="rotate(-55 177.5 85)" fill="#1e1e1e"/><ellipse cx="177.5" cy="98" rx="4.4" ry="1.9" transform="rotate(-55 177.5 98)" fill="#1e1e1e"/><ellipse cx="177.5" cy="111" rx="4.4" ry="1.9" transform="rotate(-55 177.5 111)" fill="#1e1e1e"/><ellipse cx="177.5" cy="124" rx="4.4" ry="1.9" transform="rotate(-55 177.5 124)" fill="#1e1e1e"/><path fill="#1e1e1e" d="M46 52 L47.68 56.32 L52 58 L47.68 59.68 L46 64 L44.32 59.68 L40 58 L44.32 56.32 Z"/><path fill="#1e1e1e" d="M154 52 L155.68 56.32 L160 58 L155.68 59.68 L154 64 L152.32 59.68 L148 58 L152.32 56.32 Z"/><g clip-path="url(#ft-clip)"><g transform="rotate(-40 100 162)"><path fill="#e4e7ec" stroke="#1e1e1e" stroke-width="2.5" stroke-linejoin="round" d="M95 100 H105 V218 L100 228 L95 218 Z"/><path fill="none" stroke="#a9b0ba" stroke-width="1.6" d="M100 104 V216"/><rect x="86" y="94" width="28" height="6.5" rx="2.5" fill="#f5b53d" stroke="#1e1e1e" stroke-width="2.5"/><rect x="96.5" y="77" width="7" height="17" rx="2" fill="#c2412c" stroke="#1e1e1e" stroke-width="2.5"/><circle cx="100" cy="74" r="5.2" fill="#f5b53d" stroke="#1e1e1e" stroke-width="2.5"/></g><g transform="rotate(40 100 162)"><path fill="#e4e7ec" stroke="#1e1e1e" stroke-width="2.5" stroke-linejoin="round" d="M95 100 H105 V218 L100 228 L95 218 Z"/><path fill="none" stroke="#a9b0ba" stroke-width="1.6" d="M100 104 V216"/><rect x="86" y="94" width="28" height="6.5" rx="2.5" fill="#f5b53d" stroke="#1e1e1e" stroke-width="2.5"/><rect x="96.5" y="77" width="7" height="17" rx="2" fill="#c2412c" stroke="#1e1e1e" stroke-width="2.5"/><circle cx="100" cy="74" r="5.2" fill="#f5b53d" stroke="#1e1e1e" stroke-width="2.5"/></g></g><clipPath id="ft-clip"><path d="M100 21.0 L173.0 38.5 V100.6 C173.0 149.8 146.6 187.0 100 201.3 C53.4 187.0 27.0 149.8 27.0 100.6 V38.5 Z"/></clipPath><g clip-path="url(#ft-clip)"><path fill="#1e1e1e" d="M28 200 L36 164 Q44 146 70 140 L100 150 L130 140 Q156 146 164 164 L172 200 Z"/><path fill="#f7f3ea" d="M78 142 L100 150 L122 142 L112 200 L88 200 Z"/><path fill="#f06449" d="M70 140 L78 142 L92 178 L82 170 Z M130 140 L122 142 L108 178 L118 170 Z"/><path fill="#f06449" stroke="#1e1e1e" stroke-width="2" d="M100 157 L88 151 L88 165 Z M100 157 L112 151 L112 165 Z"/><rect x="96" y="153" width="8" height="8" rx="2" fill="#c2412c" stroke="#1e1e1e" stroke-width="2"/><circle cx="100" cy="176" r="2.4" fill="#1e1e1e"/></g><clipPath id="ft-right"><rect x="100" y="0" width="100" height="200"/></clipPath><path fill="#e4e7ec" stroke="#1e1e1e" stroke-width="3.5" stroke-linejoin="round" d="M70 74 Q70 58 86 56 H114 Q130 58 130 74 V124 Q130 136 118 140 L100 146 L82 140 Q70 136 70 124 Z"/><path fill="#a9b0ba" clip-path="url(#ft-right)" d="M70 74 Q70 58 86 56 H114 Q130 58 130 74 V124 Q130 136 118 140 L100 146 L82 140 Q70 136 70 124 Z"/><path fill="none" stroke="#1e1e1e" stroke-width="3.5" stroke-linejoin="round" d="M70 74 Q70 58 86 56 H114 Q130 58 130 74 V124 Q130 136 118 140 L100 146 L82 140 Q70 136 70 124 Z"/><path fill="#1e1e1e" d="M72 82 H128 V99 Q115 95 100 101 Q85 95 72 99 Z"/><path fill="#ff3b3b" d="M76 86 L96 89 L94 95 L78 93 Z M124 86 L104 89 L106 95 L122 93 Z"/><rect x="81.5" y="108" width="3.5" height="24" rx="1.5" fill="#1e1e1e"/><rect x="90.0" y="108" width="3.5" height="24" rx="1.5" fill="#1e1e1e"/><rect x="98.5" y="108" width="3.5" height="24" rx="1.5" fill="#1e1e1e"/><rect x="107.0" y="108" width="3.5" height="24" rx="1.5" fill="#1e1e1e"/><rect x="115.5" y="108" width="3.5" height="24" rx="1.5" fill="#1e1e1e"/><path fill="none" stroke="#1e1e1e" stroke-width="2.5" d="M100 56 V82"/><path fill="#f5b53d" stroke="#1e1e1e" stroke-width="3" stroke-linejoin="round" d="M72 58 L70 36 L84 46 L92 28 L100 40 L108 28 L116 46 L130 36 L128 58 Z"/><path fill="#d48f1c" clip-path="url(#ft-right)" d="M72 58 L70 36 L84 46 L92 28 L100 40 L108 28 L116 46 L130 36 L128 58 Z"/><path fill="none" stroke="#1e1e1e" stroke-width="3" stroke-linejoin="round" d="M72 58 L70 36 L84 46 L92 28 L100 40 L108 28 L116 46 L130 36 L128 58 Z"/><circle cx="80" cy="50" r="3.2" fill="#ff3b3b" stroke="#1e1e1e" stroke-width="1.6"/><circle cx="100" cy="49" r="3.2" fill="#ff3b3b" stroke="#1e1e1e" stroke-width="1.6"/><circle cx="120" cy="50" r="3.2" fill="#ff3b3b" stroke="#1e1e1e" stroke-width="1.6"/></svg><span class="logo__name logo__name--footer">E Gonzales</span>
+                </a>
+                <div class="footer__social--list">
+                    <a href="https://github.com/m3istrE" target="_blank" rel="noopener" class="footer__social--link link__hover-effect link__hover-effect--white">GitHub</a>
+                    <a href="https://www.linkedin.com/in/e-k-gonzales/" target="_blank" rel="noopener" class="footer__social--link link__hover-effect link__hover-effect--white">LinkedIn</a>
+                    <a href="../" class="footer__social--link link__hover-effect link__hover-effect--white">Home</a>
+                    <a href="../resume.pdf" target="_blank" rel="noopener" class="footer__social--link link__hover-effect link__hover-effect--white">Resume</a>
+                </div>
+                <div class="footer__copyright">Copyright &#169; by E Gonzales</div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
