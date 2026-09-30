@@ -296,6 +296,7 @@ nav {
     display: flex;
     align-items: center;
     gap: 12px;
+    text-decoration: none; /* the logo is a "back to top" link */
 }
 
 .logo--stacked {
@@ -1012,4 +1013,8 @@ button.modal__exit:focus-visible,
         grid-template-columns: 1fr;
         gap: 0;
     }
+}
+/* sections take focus after an in-page jump (index.js); no ring around a whole section */
+section[tabindex="-1"]:focus {
+    outline: none;
 }

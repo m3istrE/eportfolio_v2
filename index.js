@@ -99,3 +99,52 @@ try { if (localStorage.getItem("theme") === "dark") applyContrast(true); } catch
 document.querySelectorAll('[data-action="toggle-modal"]').forEach((el) => el.addEventListener("click", toggleModal));
 document.querySelectorAll('[data-action="toggle-contrast"]').forEach((el) => el.addEventListener("click", toggleContrast));
 document.querySelector('[data-action="contact-submit"]')?.addEventListener("submit", contact);
+
+// Smooth in-page scrolling for the menu, the "about me" / scroll-arrow links and the
+// logo (back to top). CSS scroll-behavior:smooth is NOT enough: Chrome drops it when the
+// OS asks for reduced motion (Windows "Animation effects" off), so the owner's own clicks
+// jumped. Owner decision 2026-09-30: animate it here for every visitor - it is one short
+// scroll the visitor started, not motion that plays by itself.
+let scrollAnim = null;
+function smoothScrollTo(targetY) {
+  cancelAnimationFrame(scrollAnim);
+  const startY = window.scrollY;
+  const maxY = document.documentElement.scrollHeight - window.innerHeight;
+  const endY = Math.max(0, Math.min(targetY, maxY));
+  const distance = endY - startY;
+  if (Math.abs(distance) < 2) return;
+  const duration = Math.min(900, Math.max(400, Math.abs(distance) * 0.35));
+  const t0 = performance.now();
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const step = (now) => {
+    const t = Math.min(1, (now - t0) / duration);
+    // "instant" so the CSS smooth behaviour does not animate each frame a second time
+    window.scrollTo({ top: startY + distance * ease(t), behavior: "instant" });
+    if (t < 1) scrollAnim = requestAnimationFrame(step);
+  };
+  scrollAnim = requestAnimationFrame(step);
+}
+// the visitor grabbing the wheel, the screen or the keyboard takes over at once
+["wheel", "touchstart", "keydown"].forEach((ev) =>
+  window.addEventListener(ev, () => cancelAnimationFrame(scrollAnim), { passive: true }));
+
+document.addEventListener("click", (e) => {
+  const link = e.target.closest('a[href^="#"]');
+  if (!link || e.defaultPrevented) return;
+  const hash = link.getAttribute("href");
+  if (hash === "#") return; // contact / dark-mode controls have their own handlers
+  if (hash === "#top") {
+    e.preventDefault();
+    smoothScrollTo(0);
+    history.replaceState(null, "", location.pathname + location.search);
+    return;
+  }
+  const target = document.getElementById(hash.slice(1));
+  if (!target) return;
+  e.preventDefault();
+  smoothScrollTo(target.getBoundingClientRect().top + window.scrollY);
+  history.pushState(null, "", hash);
+  // keyboard and screen-reader users continue from the section they jumped to
+  if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+  target.focus({ preventScroll: true });
+});
