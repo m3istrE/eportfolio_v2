@@ -156,3 +156,11 @@ const navBar = document.querySelector("nav");
 const markScrolled = () => navBar?.classList.toggle("nav--scrolled", window.scrollY > 8);
 window.addEventListener("scroll", markScrolled, { passive: true });
 markScrolled();
+
+// hide the floating mail button while the footer (which has its own Email link) is visible
+const footerEl = document.querySelector("footer");
+if (footerEl && "IntersectionObserver" in window) {
+  new IntersectionObserver(([entry]) => {
+    document.body.classList.toggle("footer--visible", entry.isIntersecting);
+  }).observe(footerEl);
+}

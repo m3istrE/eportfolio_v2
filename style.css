@@ -1090,3 +1090,41 @@ section {
         height: 54px;
     }
 }
+
+/* ---- Compact footer (2026-09-30): about half the old height -------------------------
+   Was 6%-of-width padding + the 50px .container padding + an 84px badge: 458px tall at
+   1280 wide and growing with the window. Fixed padding, smaller badge, tighter rows. */
+footer {
+    padding: 40px 0;
+}
+footer .container {
+    padding: 0;
+}
+.footer__img {
+    height: 56px;
+}
+.logo--stacked {
+    gap: 6px;
+}
+.footer__social--list {
+    margin: 14px 0;
+}
+.footer__copyright {
+    font-size: 13px;
+    opacity: 0.75;
+}
+@media (max-width: 768px) {
+    footer {
+        padding: 20px 0;
+    }
+    .footer__social--list {
+        margin: 10px 0;
+    }
+}
+/* the floating mail button would sit on the compact footer's links (phones: over "Resume");
+   the footer has its own "Email" link to the same popup, so step aside while it is on screen */
+.footer--visible .mail__btn {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 200ms ease;
+}
