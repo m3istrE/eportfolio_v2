@@ -824,3 +824,10 @@ button.modal__exit:focus-visible,
     color: #f47a62;
     border-top-color: #3a3a3a;
 }
+
+/* Resume stays reachable from the header icon and footer; the nav link is hidden where five items do not fit */
+@media (max-width: 389px) {
+    .nav__link--resume {
+        display: none;
+    }
+}
