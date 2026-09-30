@@ -980,8 +980,13 @@ button.modal__exit:focus-visible,
 .about__cert--link {
     font-weight: bold;
 }
-/* Font Awesome glyph in the same 48px tile as the logo images, for tools with no usable logo */
-.about__skill--icon {
+/* Font Awesome glyph in the same 48px tile as the logo images, for tools with no usable logo.
+   Two classes deep on purpose: Font Awesome's stylesheet loads after this one and its
+   `.fa-solid { display: inline-block; line-height: 1 }` otherwise wins, leaving the glyph in
+   the tile's top-left corner (invisible in light mode, obvious on dark mode's light tile). */
+.about__skill .about__skill--icon {
+    line-height: 1;
+    flex-shrink: 0;
     width: 48px;
     height: 48px;
     display: flex;
@@ -1004,7 +1009,7 @@ button.modal__exit:focus-visible,
     background-color: #2e2e2e;
     box-shadow: none;
 }
-.dark-theme .about__skill--icon {
+.dark-theme .about__skill .about__skill--icon {
     background-color: #f5f5f5;
     border-radius: 10px;
 }
@@ -1017,4 +1022,71 @@ button.modal__exit:focus-visible,
 /* sections take focus after an in-page jump (index.js); no ring around a whole section */
 section[tabindex="-1"]:focus {
     outline: none;
+}
+
+/* ---- Menu bar stays on screen while scrolling (2026-09-30) ---------------------------
+   position:fixed, not sticky: the nav lives inside #landing-page, and sticky would only
+   hold it within that first section. The page reserves the bar's height (--nav-h) so the
+   hero does not slide under it, and sections scroll-margin by the same amount so an
+   in-page jump lands with the section title below the bar (index.js reads the height too). */
+:root {
+    --nav-h: 76px;
+}
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    max-width: none;
+    height: var(--nav-h);
+    /* full-width background, content still capped at the old 1700px */
+    padding: 0 max(20px, calc((100% - 1700px) / 2 + 20px));
+    background-color: rgb(245, 245, 245);
+    transition: all 300ms 400ms ease, box-shadow 200ms ease, background-color 300ms ease;
+}
+.nav--scrolled {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+.dark-theme nav {
+    background-color: #242424;
+}
+.dark-theme .nav--scrolled {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+/* The hero used to be absolutely centred on the whole first screen, so on windows shorter
+   than ~800px its heading started under the menu bar (1280x700: 50px, bar ends at 76px).
+   Centre it in the space BELOW the bar instead, in normal flow, so a short window makes the
+   section taller rather than hiding the heading. */
+#landing-page {
+    position: relative;
+    padding-top: var(--nav-h);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+@media (min-width: 769px) {
+    .header {
+        position: static;
+        transform: none;
+        margin: 0 auto;
+        padding: 32px 30px 96px; /* bottom room for the scroll arrow */
+    }
+}
+section {
+    scroll-margin-top: var(--nav-h);
+}
+@media (min-width: 769px) {
+    nav {
+        height: var(--nav-h);
+    }
+}
+@media (max-width: 768px) {
+    /* the bar now covers content all the way down: a slimmer bar on phones (was 100px) */
+    :root {
+        --nav-h: 68px;
+    }
+    #personal-logo {
+        height: 54px;
+    }
 }

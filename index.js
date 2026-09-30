@@ -142,9 +142,17 @@ document.addEventListener("click", (e) => {
   const target = document.getElementById(hash.slice(1));
   if (!target) return;
   e.preventDefault();
-  smoothScrollTo(target.getBoundingClientRect().top + window.scrollY);
+  // land below the fixed menu bar (CSS --nav-h); sections are flush, so no extra gap needed
+  const navH = document.querySelector("nav")?.offsetHeight || 0;
+  smoothScrollTo(target.getBoundingClientRect().top + window.scrollY - navH);
   history.pushState(null, "", hash);
   // keyboard and screen-reader users continue from the section they jumped to
   if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
   target.focus({ preventScroll: true });
 });
+
+// a soft shadow under the fixed menu bar once the page has scrolled, so it reads as a bar
+const navBar = document.querySelector("nav");
+const markScrolled = () => navBar?.classList.toggle("nav--scrolled", window.scrollY > 8);
+window.addEventListener("scroll", markScrolled, { passive: true });
+markScrolled();
