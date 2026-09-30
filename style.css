@@ -323,11 +323,10 @@ nav {
 }
 
 /* Desktop: the hero is vertically centered, so on short windows its heading starts ~74px down.
-   Keep the logo above that (the old logo's drawing ended at ~73px). */
+   A 76px nav keeps the 64px logo centered with the menu and still ending above that (at 70px). */
 @media (min-width: 769px) {
-    nav figure {
-        align-self: flex-start;
-        margin-top: 6px;
+    nav {
+        height: 76px;
     }
 
     #personal-logo {
