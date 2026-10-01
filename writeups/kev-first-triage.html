@@ -23,7 +23,7 @@
     <link rel="icon" href="../assets/favicon.ico?v=20260929" sizes="48x48">
     <link rel="icon" href="../assets/favicon.svg?v=20260929" type="image/svg+xml">
     <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png?v=20260929">
-    <link rel="stylesheet" href="../style.css?v=20260930j">
+    <link rel="stylesheet" href="../style.css?v=20260930k">
     <script src="https://kit.fontawesome.com/535a34443f.js" crossorigin="anonymous"></script>
     <script src="../index.js?v=20260930d" defer></script>
 </head>
@@ -59,6 +59,7 @@
             <p class="article__meta">Homelab write-up · September 2026 · 4 min read</p>
             <ul class="project-card__stack article__tags" aria-label="Technologies"><li>Trivy</li><li>CISA KEV</li><li>GitHub Advisories</li><li>n8n</li><li>Python</li></ul>
             <p class="article__note">Details are generalized: no hostnames, addresses, identifiers or credentials.</p>
+            <p class="article__credit">How this was built: I design, direct and review the work, and build it hands-on with Claude, an AI coding assistant. The decisions, and the homelab, are mine.</p>
 <p class="article__lead">A nightly scan of every container in my homelab returned more than 4,000 vulnerability findings on its first run. Nobody works a list that long; it gets ignored. This is how it became about seventeen concrete actions, and why the findings that mattered most were exactly the ones a severity filter threw away.</p>
 
 <h2>The problem</h2>
@@ -89,7 +90,7 @@
 
 <h2>What went wrong along the way</h2>
 <h3>A severity cap removed exactly the top tier</h3>
-<p>To keep alerts short, an early version trimmed the list by severity <em>before</em> the KEV lookup. On live data, every actively exploited finding was rated HIGH, not CRITICAL. The cap discarded precisely the findings that mattered most, and a code comment confidently said it couldn't.</p>
+<p>To keep alerts short, an early version that the assistant and I built trimmed the list by severity <em>before</em> the KEV lookup. On live data, every actively exploited finding was rated HIGH, not CRITICAL. The cap discarded precisely the findings that mattered most, while a code comment the assistant had written confidently said it couldn't. I caught it by checking the claim against real data.</p>
 <p>The rule now: <strong>a stage that can't see the priority signal doesn't get to rank or cut.</strong> It passes every finding forward in compact form, and only the stage that knows about exploitation decides what to drop.</p>
 
 <h3>Parallel scans silently undercounted</h3>

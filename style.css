@@ -1392,3 +1392,17 @@ footer .container {
         display: none;
     }
 }
+.article__credit {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+    background-color: #fff;
+    border-left: 3px solid #f06449;
+    border-radius: 0 10px 10px 0;
+    padding: 10px 14px;
+    margin: -12px 0 28px;
+}
+.dark-theme .article__credit {
+    color: #ddd;
+    background-color: #2e2e2e;
+}

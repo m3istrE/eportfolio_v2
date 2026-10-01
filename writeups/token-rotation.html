@@ -23,7 +23,7 @@
     <link rel="icon" href="../assets/favicon.ico?v=20260929" sizes="48x48">
     <link rel="icon" href="../assets/favicon.svg?v=20260929" type="image/svg+xml">
     <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png?v=20260929">
-    <link rel="stylesheet" href="../style.css?v=20260930j">
+    <link rel="stylesheet" href="../style.css?v=20260930k">
     <script src="https://kit.fontawesome.com/535a34443f.js" crossorigin="anonymous"></script>
     <script src="../index.js?v=20260930d" defer></script>
 </head>
@@ -59,6 +59,7 @@
             <p class="article__meta">Homelab write-up · September 2026 · 3 min read</p>
             <ul class="project-card__stack article__tags" aria-label="Technologies"><li>Cloudflare API</li><li>Least privilege</li><li>Python</li><li>n8n</li></ul>
             <p class="article__note">Details are generalized: no hostnames, addresses, identifiers or credentials.</p>
+            <p class="article__credit">How this was built: I design, direct and review the work, and build it hands-on with Claude, an AI coding assistant. The decisions, and the homelab, are mine.</p>
 <p class="article__lead">A working API token is used by scripts, automation and monitoring, so it gets copied into a lot of places. If that token can also create tokens, any one of those copies is a full account takeover. This is the two-token design I use to rotate every 90 days without giving the working token that power.</p>
 
 <h2>The problem</h2>
@@ -93,7 +94,7 @@
 <p>A token that can edit tokens still can't use the API to create another token with that same power. The API refuses sub-tokens that could manage tokens. So creating the rotator was a one-time manual step in the dashboard. After that, the rotator can roll both tokens by API indefinitely.</p>
 
 <h3>Taking power away needs the other token</h3>
-<p>Removing the token permission from the main token, and later adding a narrowly scoped permission it needed, can't be done with the main token itself. The rotator does it with a full-definition update: every other scope and the IP restriction are sent back unchanged, and only the one permission differs. It's worth checking every credential you hold before concluding something can't be automated.</p>
+<p>Removing the token permission from the main token, and later adding a narrowly scoped permission it needed, can't be done with the main token itself. The rotator does it with a full-definition update: every other scope and the IP restriction are sent back unchanged, and only the one permission differs. The assistant first reported that this couldn't be automated, because it had only tested the main token. The rotator could grant the permission all along. It's worth checking every credential you hold before concluding something can't be done.</p>
 
 <h3>Not every token can rotate itself</h3>
 <p>Some providers offer no API to regenerate a token. GitHub's fine-grained personal access tokens are one example. Those get the narrowest scope that works, a fixed expiry date, and a reminder well before it, which is the honest fallback when automation isn't possible.</p>
